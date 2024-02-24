@@ -8,8 +8,8 @@ import 'package:hushh_proto/modules/chats/screens/reference.dart';
 import 'package:hushh_proto/modules/chats/widgets/lists.dart';
 import 'package:hushh_proto/widgets/colors.dart';
 
-class ChatPage extends StatefulWidget {
-  const ChatPage({
+class BasicChatPage extends StatefulWidget {
+  const BasicChatPage({
     super.key,
     required this.title,
     required this.table,
@@ -17,10 +17,10 @@ class ChatPage extends StatefulWidget {
   final String title;
   final String table;
   @override
-  State<ChatPage> createState() => _ChatPageState();
+  State<BasicChatPage> createState() => _BasicChatPageState();
 }
 
-class _ChatPageState extends State<ChatPage> {
+class _BasicChatPageState extends State<BasicChatPage> {
   //Variables
   List<Message> chatList = [];
   int questionIndex = 0;

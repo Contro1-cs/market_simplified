@@ -39,6 +39,7 @@ dependencies:
   flutter_svg: ^2.0.9
   url_launcher: ^6.2.4
   supabase_flutter: ^2.3.4
+  fl_chart: ^0.66.2
 
 dev_dependencies:
   flutter_test:

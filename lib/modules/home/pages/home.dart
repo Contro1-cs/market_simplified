@@ -1,5 +1,7 @@
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:hushh_proto/modules/chats/widgets/chart.dart';
 import 'package:hushh_proto/modules/home/widgets/cards.dart';
 import 'package:hushh_proto/widgets/colors.dart';
 
@@ -116,7 +118,19 @@ class _HomePageState extends State<HomePage> {
           ],
         ),
       ),
-      body: HomePageLayout(),
+      body: currentIndex == 0
+          ? HomePageLayout()
+          : LineChartWidget(
+              barData: const [
+                FlSpot(0, 3),
+                FlSpot(2.6, 2),
+                FlSpot(4.9, 5),
+                FlSpot(6.8, 3.1),
+                FlSpot(8, 4),
+                FlSpot(9.5, 3),
+                FlSpot(11, 4),
+              ],
+            ),
     );
   }
 }
@@ -177,14 +191,17 @@ class _HomePageLayoutState extends State<HomePageLayout> {
               ),
               const SizedBox(height: 8),
               learningCards(
+                context,
                 'Support and Resistance',
                 Color(0xff61F4DE),
               ),
               learningCards(
+                context,
                 'Candelstick Patters',
                 Color(0xffDBB1BC),
               ),
               learningCards(
+                context,
                 'Advance Patterns',
                 Color(0xffA1E8AF),
               ),
