@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hushh_proto/modules/authentication/screens/user_auth.dart';
 import 'package:hushh_proto/modules/home/pages/home.dart';
 import 'package:hushh_proto/utils/supabase.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -26,7 +27,9 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const HomePage(),
+      home: supabase.auth.currentUser == null
+          ? const UserAuthPage()
+          : const HomePage(),
     );
   }
 }
