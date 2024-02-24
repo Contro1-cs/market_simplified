@@ -1,4 +1,4 @@
-package com.example.hushh_proto
+package com.hackathon.hack_jmi
 
 import io.flutter.embedding.android.FlutterActivity
 
