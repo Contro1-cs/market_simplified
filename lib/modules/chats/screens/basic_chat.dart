@@ -24,7 +24,7 @@ class _BasicChatPageState extends State<BasicChatPage> {
   //Variables
   List<Message> chatList = [];
   int questionIndex = 0;
-  List<Map<String, dynamic>> technicalAnalysis = [];
+  List<Map<String, dynamic>> questions = [];
 
   //Controllers
   ScrollController _chatScrollController = ScrollController();
@@ -45,11 +45,11 @@ class _BasicChatPageState extends State<BasicChatPage> {
   }
 
   void fetchQuestions() async {
-    technicalAnalysis = await supabase.from(widget.table).select();
-    String question = technicalAnalysis[0]['question'];
-    String opt1 = technicalAnalysis[0]['option1'];
-    String opt2 = technicalAnalysis[0]['option2'];
-    String opt3 = technicalAnalysis[0]['option3'];
+    questions = await supabase.from(widget.table).select();
+    String question = questions[0]['question'];
+    String opt1 = questions[0]['option1'];
+    String opt2 = questions[0]['option2'];
+    String opt3 = questions[0]['option3'];
 
     chatList.add(
       Message(
@@ -81,25 +81,6 @@ class _BasicChatPageState extends State<BasicChatPage> {
     setState(() {});
   }
 
-  // fetchQuestions() {
-  //   String question = technicalAnalysis[0]['question'];
-  //   List options = technicalAnalysis[0]['options'];
-  //   chatList.add(
-  //     Message(
-  //       sender: 'model',
-  //       content: question,
-  //     ),
-  //   );
-  //   options.forEach((element) {
-  //     chatList.add(
-  //       Message(
-  //         sender: 'user',
-  //         content: element,
-  //         format: 'option',
-  //       ),
-  //     );
-  //   });
-  // }
 
   int randomNumGenerator() {
     Random random = Random();
@@ -178,13 +159,13 @@ class _BasicChatPageState extends State<BasicChatPage> {
                           //Function
                           nextQuestion() {
                             String question =
-                                technicalAnalysis[questionIndex]['question'];
+                                questions[questionIndex]['question'];
                             String opt1 =
-                                technicalAnalysis[questionIndex]['option1'];
+                                questions[questionIndex]['option1'];
                             String opt2 =
-                                technicalAnalysis[questionIndex]['option2'];
+                                questions[questionIndex]['option2'];
                             String opt3 =
-                                technicalAnalysis[questionIndex]['option3'];
+                                questions[questionIndex]['option3'];
                             List options = [opt1, opt2, opt3];
 
                             data.add(
@@ -213,8 +194,8 @@ class _BasicChatPageState extends State<BasicChatPage> {
 
                           checkAnswer(String selected) {
                             int answer =
-                                technicalAnalysis[questionIndex]['answer'];
-                            String option = technicalAnalysis[questionIndex]
+                                questions[questionIndex]['answer'];
+                            String option = questions[questionIndex]
                                 ['option${answer + 1}'];
                             debugPrint('opt: $option');
                             debugPrint('selected: $selected');

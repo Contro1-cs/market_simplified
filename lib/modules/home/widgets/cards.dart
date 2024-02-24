@@ -47,10 +47,15 @@ basicsCard(context, String title, String image, String table) {
   );
 }
 
-learningCards(context, String title, Color color) {
+learningCards(context, String title, Color color, String table) {
   return InkWell(
     onTap: () {
-      rightSlideTransition(context, AdvancedChat());
+      rightSlideTransition(
+          context,
+          AdvancedChat(
+            title: title,
+            table: table,
+          ));
     },
     child: Container(
       width: double.infinity,

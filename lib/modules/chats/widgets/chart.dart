@@ -23,17 +23,10 @@ class _LineChartWidgetState extends State<LineChartWidget> {
     return Stack(
       children: <Widget>[
         AspectRatio(
-          aspectRatio: 1.5,
-          child: Padding(
-            padding: const EdgeInsets.only(
-              right: 18,
-              left: 12,
-              top: 24,
-              bottom: 12,
-            ),
-            child: LineChart(
-              mainData(),
-            ),
+          aspectRatio: 1.7,
+          child: LineChart(
+            mainData(),
+            duration: const Duration(seconds: 1),
           ),
         ),
       ],
@@ -69,9 +62,6 @@ class _LineChartWidgetState extends State<LineChartWidget> {
         show: true,
         border: Border.all(color: const Color(0xff37434d)),
       ),
-      minX: 0,
-      minY: 0,
-      maxY: 10,
       lineBarsData: [
         LineChartBarData(
           spots: widget.barData,
