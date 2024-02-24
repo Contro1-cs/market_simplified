@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:hushh_proto/main.dart';
 import 'package:hushh_proto/modules/chats/models/message_model.dart';
 import 'package:hushh_proto/modules/chats/screens/reference.dart';
 import 'package:hushh_proto/modules/chats/widgets/lists.dart';
@@ -11,8 +12,10 @@ class ChatPage extends StatefulWidget {
   const ChatPage({
     super.key,
     required this.title,
+    required this.table,
   });
   final String title;
+  final String table;
   @override
   State<ChatPage> createState() => _ChatPageState();
 }
@@ -21,6 +24,7 @@ class _ChatPageState extends State<ChatPage> {
   //Variables
   List<Message> chatList = [];
   int questionIndex = 0;
+  List<Map<String, dynamic>> technicalAnalysis = [];
 
   //Controllers
   ScrollController _chatScrollController = ScrollController();
@@ -28,11 +32,11 @@ class _ChatPageState extends State<ChatPage> {
       StreamController<List<Message>>();
 
   //Functions
-  clearOptions() {
+  void clearOptions() {
     chatList.removeWhere((element) => element.format == 'option');
   }
 
-  scrollToBottom() {
+  void scrollToBottom() {
     _chatScrollController.animateTo(
       _chatScrollController.position.maxScrollExtent,
       duration: Duration(milliseconds: 500),
@@ -40,25 +44,62 @@ class _ChatPageState extends State<ChatPage> {
     );
   }
 
-  fetchQuestions() {
+  void fetchQuestions() async {
+    technicalAnalysis = await supabase.from(widget.table).select();
     String question = technicalAnalysis[0]['question'];
-    List options = technicalAnalysis[0]['options'];
+    String opt1 = technicalAnalysis[0]['option1'];
+    String opt2 = technicalAnalysis[0]['option2'];
+    String opt3 = technicalAnalysis[0]['option3'];
+
     chatList.add(
       Message(
         sender: 'model',
         content: question,
       ),
     );
-    options.forEach((element) {
-      chatList.add(
-        Message(
-          sender: 'user',
-          content: element,
-          format: 'option',
-        ),
-      );
-    });
+    chatList.add(
+      Message(
+        sender: 'user',
+        content: opt1,
+        format: 'option',
+      ),
+    );
+    chatList.add(
+      Message(
+        sender: 'user',
+        content: opt2,
+        format: 'option',
+      ),
+    );
+    chatList.add(
+      Message(
+        sender: 'user',
+        content: opt3,
+        format: 'option',
+      ),
+    );
+    setState(() {});
   }
+
+  // fetchQuestions() {
+  //   String question = technicalAnalysis[0]['question'];
+  //   List options = technicalAnalysis[0]['options'];
+  //   chatList.add(
+  //     Message(
+  //       sender: 'model',
+  //       content: question,
+  //     ),
+  //   );
+  //   options.forEach((element) {
+  //     chatList.add(
+  //       Message(
+  //         sender: 'user',
+  //         content: element,
+  //         format: 'option',
+  //       ),
+  //     );
+  //   });
+  // }
 
   int randomNumGenerator() {
     Random random = Random();
@@ -97,11 +138,6 @@ class _ChatPageState extends State<ChatPage> {
       ),
       body: Column(
         children: [
-          Container(
-            height: 1,
-            width: double.infinity,
-            color: Pallet.white.withOpacity(0.5),
-          ),
           const SizedBox(height: 20),
           Expanded(
             child: chatList.isEmpty
@@ -143,8 +179,14 @@ class _ChatPageState extends State<ChatPage> {
                           nextQuestion() {
                             String question =
                                 technicalAnalysis[questionIndex]['question'];
-                            List options =
-                                technicalAnalysis[questionIndex]['options'];
+                            String opt1 =
+                                technicalAnalysis[questionIndex]['option1'];
+                            String opt2 =
+                                technicalAnalysis[questionIndex]['option2'];
+                            String opt3 =
+                                technicalAnalysis[questionIndex]['option3'];
+                            List options = [opt1, opt2, opt3];
+
                             data.add(
                               Message(
                                 sender: 'model',
@@ -153,7 +195,6 @@ class _ChatPageState extends State<ChatPage> {
                             );
                             options.forEach((element) {
                               scrollToBottom();
-
                               Future.delayed(const Duration(seconds: 1), () {
                                 setState(() {
                                   data.add(
@@ -173,14 +214,14 @@ class _ChatPageState extends State<ChatPage> {
                           checkAnswer(String selected) {
                             int answer =
                                 technicalAnalysis[questionIndex]['answer'];
-                            List options =
-                                technicalAnalysis[questionIndex]['options'];
-                            debugPrint('$questionIndex option: ${selected}');
-                            debugPrint(
-                                '$questionIndex answer: ${options[answer]}');
+                            String option = technicalAnalysis[questionIndex]
+                                ['option${answer + 1}'];
+                            debugPrint('opt: $option');
+                            debugPrint('selected: $selected');
+
                             int tempNum = randomNumGenerator();
                             Future.delayed(const Duration(seconds: 1), () {
-                              if (selected == options[answer]) {
+                              if (selected == option) {
                                 data.add(
                                   Message(
                                     sender: 'model',
@@ -227,8 +268,8 @@ class _ChatPageState extends State<ChatPage> {
                                           content: message,
                                         ),
                                       );
-                                      checkAnswer(message);
                                     });
+                                    checkAnswer(message);
                                     questionIndex++;
                                   }
                                 },

@@ -3,7 +3,7 @@ import 'package:hushh_proto/modules/chats/screens/chat.dart';
 import 'package:hushh_proto/widgets/colors.dart';
 import 'package:hushh_proto/widgets/transitions.dart';
 
-basicsCard(context, String title, String image) {
+basicsCard(context, String title, String image, String table) {
   return Expanded(
     child: InkWell(
       onTap: () {
@@ -11,6 +11,7 @@ basicsCard(context, String title, String image) {
             context,
             ChatPage(
               title: title,
+              table: table,
             ));
       },
       child: Container(

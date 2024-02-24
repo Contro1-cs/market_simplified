@@ -153,14 +153,16 @@ class _HomePageLayoutState extends State<HomePageLayout> {
                 children: [
                   basicsCard(
                     context,
-                    'Basics of technical analysis',
+                    'Technical Analysis Basics',
                     'assets/ta.png',
+                    'technical_analysis',
                   ),
                   const SizedBox(width: 14),
                   basicsCard(
                     context,
-                    'Basics of Stock market',
+                    'Options Trading Basics',
                     'assets/basics.png',
+                    'options_trading',
                   ),
                 ],
               ),
