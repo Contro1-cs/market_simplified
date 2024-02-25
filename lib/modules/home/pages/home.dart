@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:hushh_proto/modules/chats/screens/ai_chat.dart';
-import 'package:hushh_proto/modules/chats/screens/reference.dart';
 import 'package:hushh_proto/modules/home/widgets/cards.dart';
 import 'package:hushh_proto/modules/profile/screens/profile.dart';
 import 'package:hushh_proto/modules/scores/screens/score_tab.dart';
@@ -148,72 +147,86 @@ class _HomePageLayoutState extends State<HomePageLayout> {
           ),
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
-        child: Column(
-          children: [
-            const SizedBox(height: 20),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Start with the basics',
-                  style: TextStyle(
-                    color: Pallet.white,
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                const SizedBox(height: 8),
-                Row(
-                  children: [
-                    basicsCard(
-                      context,
-                      'Technical Analysis Basics',
-                      'assets/ta.png',
-                      'technical_analysis',
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: Column(
+            children: [
+              const SizedBox(height: 20),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Start with the basics',
+                    style: TextStyle(
+                      color: Pallet.white,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
                     ),
-                    const SizedBox(width: 14),
-                    basicsCard(
-                      context,
-                      'Options Trading Basics',
-                      'assets/basics.png',
-                      'options_trading',
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 20),
-                Text(
-                  'Practice what you learnt',
-                  style: TextStyle(
-                    color: Pallet.white,
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
                   ),
-                ),
-                const SizedBox(height: 8),
-                learningCards(
-                  context,
-                  'Basic Patterns',
-                  Color(0xff61F4DE),
-                  'basic_patterns',
-                ),
-                learningCards(
-                  context,
-                  'Support and Resistance Patterns',
-                  Color(0xffDBB1BC),
-                  'support_resistance',
-                ),
-                learningCards(
-                  context,
-                  'Flag Patterns',
-                  Color(0xffA1E8AF),
-                  'basic_patterns',
-                ),
-              ],
-            ),
-          ],
+                  const SizedBox(height: 8),
+                  Row(
+                    children: [
+                      basicsCard(
+                        context,
+                        'Technical Analysis Basics',
+                        'assets/ta.png',
+                        'technical_analysis',
+                      ),
+                      const SizedBox(width: 14),
+                      basicsCard(
+                        context,
+                        'Options Trading Basics',
+                        'assets/basics.png',
+                        'options_trading',
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 20),
+                  Text(
+                    'Practice what you learnt',
+                    style: TextStyle(
+                      color: Pallet.white,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  learningCards(
+                    context,
+                    'Basic Patterns',
+                    Color(0xff61F4DE),
+                    'basic_patterns',
+                  ),
+                  learningCards(
+                    context,
+                    'Support and Resistance Patterns',
+                    Color(0xffDBB1BC),
+                    'support_resistance',
+                  ),
+                  learningCards(
+                    context,
+                    'Flag Patterns',
+                    Color(0xffA1E8AF),
+                    'basic_patterns',
+                  ),
+                  learningCards(
+                    context, 
+                    'Volumetric Analysis',
+                    Color(0xffACFCD9),
+                    'basic_patterns',
+                  ),
+                  learningCards(
+                    context,
+                    'Flag Patterns',
+                    Color(0xffDBBEA1),
+                    'basic_patterns',
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );

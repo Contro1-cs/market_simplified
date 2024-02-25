@@ -99,6 +99,7 @@ class _AdvancedChatState extends State<AdvancedChat> {
 
   @override
   void initState() {
+    questionIndex = 0;
     fetchData();
     super.initState();
   }
@@ -173,8 +174,10 @@ class _AdvancedChatState extends State<AdvancedChat> {
 
                         //Function
                         nextQuestion() {
-                          String question =
-                              nextPatternQuestions[randomNumGenerator(10)];
+                          String question = widget.table == 'support_resistance'
+                              ? supportResistanceQuestions[
+                                  randomNumGenerator(7)]
+                              : nextPatternQuestions[randomNumGenerator(10)];
                           String opt1 = graphData[questionIndex]['option1'];
                           String opt2 = graphData[questionIndex]['option2'];
                           String opt3 = graphData[questionIndex]['option3'];
@@ -207,17 +210,21 @@ class _AdvancedChatState extends State<AdvancedChat> {
                             scrollToBottom();
                           });
                           scrollToBottom();
+                          debugPrint('Score: $currentScore');
                         }
 
-                        checkAnswer(int selected) {
+                        checkAnswer(String selected) {
                           int answer = graphData[questionIndex]['answer'];
-                          debugPrint('selected: $selected');
-
+                          String option =
+                              graphData[questionIndex]['option${answer}'];
                           int tempNum = randomNumGenerator(10);
+                          debugPrint('selected: $selected');
+                          
+                          debugPrint('answer: $option');
+
                           Future.delayed(const Duration(seconds: 1), () {
-                            if (selected == answer) {
+                            if (selected == option) {
                               currentScore++;
-                              debugPrint('correct: $currentScore');
                               data.add(
                                 Message(
                                   sender: 'model',
@@ -286,7 +293,7 @@ class _AdvancedChatState extends State<AdvancedChat> {
                                       ),
                                     );
                                   });
-                                  checkAnswer(int.parse(message));
+                                  checkAnswer(message.toString());
                                   questionIndex++;
                                 }
                               },

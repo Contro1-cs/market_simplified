@@ -47,23 +47,20 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget build(BuildContext context) {
     barData = [];
     List tempList = [
-      {"x": 0.0, "y": 0.0},
-      {"x": 1.0, "y": 3.0},
-      {"x": 2.0, "y": 2.0},
-      {"x": 3.0, "y": 5.0},
-      {"x": 4.0, "y": 4.0},
-      {"x": 5.0, "y": 4.8},
-      {"x": 6.0, "y": 3.0},
-      {"x": 7.0, "y": 5.0},
-      {"x": 8.0, "y": 2.0},
-      {"x": 9.0, "y": 7.0},
-      {"x": 10.0, "y": 5.0},
-      {"x": 11.0, "y": 7.0},
-      {"x": 12.0, "y": 9.0}
+      {"x": 1, "y": -1},
+      {"x": 2, "y": -2},
+      {"x": 3, "y": -3},
+      {"x": 4, "y": -4},
+      {"x": 5, "y": -5},
+      {"x": 6, "y": -3},
+      {"x": 7, "y": -5},
+      {"x": 8, "y": -4},
+      {"x": 9, "y": -3},
+      {"x": 10, "y": -1}
     ];
     tempList.forEach((element) {
-      double x = element["x"];
-      double y = element["y"];
+      double x = double.parse(element["x"].toString());
+      double y = double.parse(element["y"].toString());
       barData.add(FlSpot(x, y));
     });
 

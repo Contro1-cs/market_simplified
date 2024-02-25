@@ -52,8 +52,8 @@ class _LineChartWidgetState extends State<LineChartWidget> {
       );
   LineChartData mainData() {
     return LineChartData(
-      minX: 0,
-      minY: 0,
+      // minX: 0,
+      // minY: 0,
       gridData: FlGridData(
         show: true,
         drawVerticalLine: true,

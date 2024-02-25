@@ -78,3 +78,13 @@ List<String> aboveAverageImprovement = [
   "Explore real-world applications of the concepts you've mastered to deepen your understanding.",
   "Consider mentoring others or participating in collaborative projects to broaden your perspective."
 ];
+//Support Resistance Questions
+List<String> supportResistanceQuestions = [
+  "Can you identify the support or resistance level depicted in the graph?",
+  "What price point is acting as the support or resistance level in the graph?",
+  "Do you notice any significant support or resistance levels on the graph?",
+  "Where do you think the support or resistance level lies in the graph?",
+  "Identify the key support or resistance level displayed on the graph.",
+  "What price level is holding as the support or resistance in the graph?",
+  "Can you determine the support or resistance area from the graph?",
+];
