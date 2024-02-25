@@ -94,6 +94,21 @@ class _AiChatBotState extends State<AiChatBot> {
       {
         "role": "user",
         "parts": [
+          {
+            "text":
+                "Also I want you to answer me in as short ways as possible. Dont explain me too much if I dont ask you to answer in detail"
+          }
+        ]
+      },
+      {
+        "role": "model",
+        "parts": [
+          {"text": "Okay. I am will try to answer in as short ways as possible"}
+        ]
+      },
+      {
+        "role": "user",
+        "parts": [
           {"text": prompt}
         ]
       },
@@ -317,8 +332,19 @@ class _AiChatBotState extends State<AiChatBot> {
                                       vertical: 8,
                                     ),
                                     decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(20),
-                                      color: Pallet.white,
+                                      borderRadius: BorderRadius.only(
+                                        topLeft: Radius.circular(20),
+                                        topRight: Radius.circular(20),
+                                        bottomLeft: owner
+                                            ? Radius.circular(20)
+                                            : Radius.circular(0),
+                                        bottomRight: owner
+                                            ? Radius.circular(0)
+                                            : Radius.circular(20),
+                                      ),
+                                      color: owner
+                                          ? Pallet.userChat
+                                          : Pallet.modelChat,
                                     ),
                                     child: Text(
                                       message,
