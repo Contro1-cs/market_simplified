@@ -25,10 +25,12 @@ class _ScoreTabState extends State<ScoreTab> {
         .select()
         .eq('user_id', supabase.auth.currentUser!.id)
         .single();
-    basicScore = data['basic_score'];
-    basicTests = data['basic_tests'];
-    advScore = data['adv_score'];
-    advTests = data['adv_tests'];
+    setState(() {
+      basicScore = data['basic_score'];
+      basicTests = data['basic_tests'];
+      advScore = data['adv_score'];
+      advTests = data['adv_tests'];
+    });
     debugPrint('$basicScore $basicTests $advScore $advTests');
   }
 
@@ -65,28 +67,32 @@ class _ScoreTabState extends State<ScoreTab> {
               testScoreContainer(
                   'Advance Tests', advTests, advScore.toStringAsFixed(2)),
               Expanded(child: SizedBox()),
-              SizedBox(
-                width: double.infinity,
-                height: 40,
-                child: ElevatedButton.icon(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Pallet.white,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(100),
-                    ),
-                  ),
-                  onPressed: () {},
-                  icon: SvgPicture.asset(
-                    "assets/atom.svg",
-                    color: Pallet.blue,
-                    height: 20,
-                  ),
-                  label: Text(
-                    'Get analyzed by AI',
-                    style: TextStyle(color: Pallet.blue),
-                  ),
-                ),
-              ),
+              // SizedBox(
+              //   width: double.infinity,
+              //   height: 40,
+              //   child: ElevatedButton.icon(
+              //     style: ElevatedButton.styleFrom(
+              //       backgroundColor: Pallet.white,
+              //       shape: RoundedRectangleBorder(
+              //         borderRadius: BorderRadius.circular(100),
+              //       ),
+              //     ),
+              //     onPressed: () {
+              //       setState(() {
+
+              //       });
+              //     },
+              //     icon: SvgPicture.asset(
+              //       "assets/atom.svg",
+              //       color: Pallet.blue,
+              //       height: 20,
+              //     ),
+              //     label: Text(
+              //       'Get analyzed by AI',
+              //       style: TextStyle(color: Pallet.blue),
+              //     ),
+              //   ),
+              // ),
               const SizedBox(height: 10),
             ],
           ),

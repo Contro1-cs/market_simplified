@@ -209,17 +209,15 @@ class _AdvancedChatState extends State<AdvancedChat> {
                           scrollToBottom();
                         }
 
-                        checkAnswer(String selected) {
+                        checkAnswer(int selected) {
                           int answer = graphData[questionIndex]['answer'];
-                          String option =
-                              graphData[questionIndex]['option${answer}'];
-                          debugPrint('opt:$questionIndex $answer $option');
                           debugPrint('selected: $selected');
 
                           int tempNum = randomNumGenerator(10);
                           Future.delayed(const Duration(seconds: 1), () {
-                            if (selected == option) {
+                            if (selected == answer) {
                               currentScore++;
+                              debugPrint('correct: $currentScore');
                               data.add(
                                 Message(
                                   sender: 'model',
@@ -227,7 +225,6 @@ class _AdvancedChatState extends State<AdvancedChat> {
                                 ),
                               );
                             } else {
-                              currentScore--;
                               data.add(
                                 Message(
                                   sender: 'model',
@@ -289,7 +286,7 @@ class _AdvancedChatState extends State<AdvancedChat> {
                                       ),
                                     );
                                   });
-                                  checkAnswer(message);
+                                  checkAnswer(int.parse(message));
                                   questionIndex++;
                                 }
                               },

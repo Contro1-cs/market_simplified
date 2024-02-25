@@ -1,5 +1,6 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:hushh_proto/widgets/colors.dart';
 
 class LineChartWidget extends StatefulWidget {
   const LineChartWidget({
@@ -33,8 +34,26 @@ class _LineChartWidgetState extends State<LineChartWidget> {
     );
   }
 
+  Widget leftTitleWidgets(double value, TitleMeta meta) {
+    const style = TextStyle(
+      fontWeight: FontWeight.normal,
+      fontSize: 10,
+      color: Pallet.white,
+    );
+
+    String text = value.toString();
+
+    return Text(text, style: style, textAlign: TextAlign.center);
+  }
+
+  SideTitles leftTitles() => SideTitles(
+        getTitlesWidget: leftTitleWidgets,
+        showTitles: true,
+      );
   LineChartData mainData() {
     return LineChartData(
+      minX: 0,
+      minY: 0,
       gridData: FlGridData(
         show: true,
         drawVerticalLine: true,
@@ -53,9 +72,8 @@ class _LineChartWidgetState extends State<LineChartWidget> {
           ),
         ),
         leftTitles: AxisTitles(
-          sideTitles: SideTitles(
-            showTitles: false,
-          ),
+          sideTitles:
+              SideTitles(showTitles: true, getTitlesWidget: leftTitleWidgets),
         ),
       ),
       borderData: FlBorderData(
