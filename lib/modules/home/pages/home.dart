@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:hushh_proto/modules/chats/screens/ai_chat.dart';
+import 'package:hushh_proto/modules/chats/screens/reference.dart';
 import 'package:hushh_proto/modules/home/widgets/cards.dart';
 import 'package:hushh_proto/modules/profile/screens/profile.dart';
+import 'package:hushh_proto/modules/scores/screens/score_tab.dart';
 import 'package:hushh_proto/widgets/colors.dart';
 
 class HomePage extends StatefulWidget {
@@ -15,8 +18,8 @@ class _HomePageState extends State<HomePage> {
   int currentIndex = 0;
   List<Widget> pages = [
     const HomePageLayout(),
-    const HomePageLayout(),
-    const HomePageLayout(),
+    const ScoreTab(),
+    const AiChatBot(),
     const ProfilePage(),
   ];
 
@@ -87,8 +90,13 @@ class _HomePageState extends State<HomePage> {
               },
               child: navBarItem(
                 currentIndex == 2
-                    ? SvgPicture.asset("assets/navbar/calendar_selected.svg")
-                    : SvgPicture.asset("assets/navbar/calendar_icon.svg"),
+                    ? SvgPicture.asset(
+                        "assets/navbar/chat_selected.svg",
+                      )
+                    : SvgPicture.asset(
+                        "assets/navbar/chat_icon.svg",
+                        color: Pallet.white.withOpacity(0.7),
+                      ),
               ),
             ),
             const SizedBox(width: 1),

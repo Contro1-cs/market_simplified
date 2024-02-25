@@ -1,12 +1,14 @@
 import 'dart:async';
-import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:hushh_proto/main.dart';
 import 'package:hushh_proto/modules/chats/models/message_model.dart';
 import 'package:hushh_proto/modules/chats/screens/reference.dart';
+import 'package:hushh_proto/modules/chats/screens/results.dart';
 import 'package:hushh_proto/modules/chats/widgets/lists.dart';
+import 'package:hushh_proto/modules/home/pages/home.dart';
 import 'package:hushh_proto/widgets/colors.dart';
+import 'package:hushh_proto/widgets/functions.dart';
 
 class BasicChatPage extends StatefulWidget {
   const BasicChatPage({
@@ -24,6 +26,7 @@ class _BasicChatPageState extends State<BasicChatPage> {
   //Variables
   List<Message> chatList = [];
   int questionIndex = 0;
+  int currentScore = 0;
   List<Map<String, dynamic>> questions = [];
 
   //Controllers
@@ -81,13 +84,6 @@ class _BasicChatPageState extends State<BasicChatPage> {
     setState(() {});
   }
 
-
-  int randomNumGenerator() {
-    Random random = Random();
-    int randomNumber = random.nextInt(10);
-    return randomNumber;
-  }
-
   @override
   void initState() {
     fetchQuestions();
@@ -97,7 +93,7 @@ class _BasicChatPageState extends State<BasicChatPage> {
   @override
   void dispose() {
     _streamController.close();
-    _chatScrollController.dispose();
+    // _chatScrollController.dispose();
     super.dispose();
   }
 
@@ -160,12 +156,9 @@ class _BasicChatPageState extends State<BasicChatPage> {
                           nextQuestion() {
                             String question =
                                 questions[questionIndex]['question'];
-                            String opt1 =
-                                questions[questionIndex]['option1'];
-                            String opt2 =
-                                questions[questionIndex]['option2'];
-                            String opt3 =
-                                questions[questionIndex]['option3'];
+                            String opt1 = questions[questionIndex]['option1'];
+                            String opt2 = questions[questionIndex]['option2'];
+                            String opt3 = questions[questionIndex]['option3'];
                             List options = [opt1, opt2, opt3];
 
                             data.add(
@@ -193,16 +186,15 @@ class _BasicChatPageState extends State<BasicChatPage> {
                           }
 
                           checkAnswer(String selected) {
-                            int answer =
-                                questions[questionIndex]['answer'];
-                            String option = questions[questionIndex]
-                                ['option${answer + 1}'];
+                            int answer = questions[questionIndex]['answer'];
+                            String option =
+                                questions[questionIndex]['option${answer + 1}'];
                             debugPrint('opt: $option');
                             debugPrint('selected: $selected');
-
-                            int tempNum = randomNumGenerator();
+                            int tempNum = randomNumGenerator(10);
                             Future.delayed(const Duration(seconds: 1), () {
                               if (selected == option) {
+                                currentScore++;
                                 data.add(
                                   Message(
                                     sender: 'model',
@@ -218,14 +210,32 @@ class _BasicChatPageState extends State<BasicChatPage> {
                                 );
                               }
                               setState(() {});
-                            }).then(
-                              (value) => Future.delayed(
-                                  const Duration(seconds: 1), () {
-                                setState(() {
+                            }).then((value) {
+                              if (questionIndex == questions.length - 1) {
+                                Future.delayed(const Duration(seconds: 1), () {
+                                  Navigator.pushAndRemoveUntil(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => HomePage()),
+                                      (route) => false);
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => ResultPage(
+                                        score: currentScore,
+                                        total: questions.length,
+                                        basic: true,
+                                      ),
+                                    ),
+                                  );
+                                });
+                              } else {
+                                Future.delayed(const Duration(seconds: 1), () {
+                                  questionIndex++;
                                   nextQuestion();
                                 });
-                              }),
-                            );
+                              }
+                            });
                             scrollToBottom();
                           }
 
@@ -251,7 +261,6 @@ class _BasicChatPageState extends State<BasicChatPage> {
                                       );
                                     });
                                     checkAnswer(message);
-                                    questionIndex++;
                                   }
                                 },
                                 child: Wrap(

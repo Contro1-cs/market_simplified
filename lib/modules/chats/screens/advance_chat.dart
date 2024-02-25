@@ -1,13 +1,14 @@
 import 'dart:async';
-import 'dart:math';
-
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:hushh_proto/main.dart';
 import 'package:hushh_proto/modules/chats/models/message_model.dart';
+import 'package:hushh_proto/modules/chats/screens/results.dart';
 import 'package:hushh_proto/modules/chats/widgets/chart.dart';
 import 'package:hushh_proto/modules/chats/widgets/lists.dart';
+import 'package:hushh_proto/modules/home/pages/home.dart';
 import 'package:hushh_proto/widgets/colors.dart';
+import 'package:hushh_proto/widgets/functions.dart';
 
 class AdvancedChat extends StatefulWidget {
   const AdvancedChat({
@@ -26,9 +27,9 @@ class _AdvancedChatState extends State<AdvancedChat> {
   //Variables
   List<Message> advanceChatList = [];
   int questionIndex = 0;
+  int currentScore = 0;
   List<FlSpot> barData = [];
   List<Map<String, dynamic>> graphData = [];
-
   List<Map<String, dynamic>> advanceChatData = [];
 
   //Controllers
@@ -44,12 +45,6 @@ class _AdvancedChatState extends State<AdvancedChat> {
       curve: Curves.easeOut,
     );
     setState(() {});
-  }
-
-  int randomNumGenerator() {
-    Random random = Random();
-    int randomNumber = random.nextInt(10);
-    return randomNumber;
   }
 
   void clearOptions() {
@@ -69,7 +64,7 @@ class _AdvancedChatState extends State<AdvancedChat> {
       setState(() {
         advanceChatList.add(Message(
           sender: 'model',
-          content: nextPatternQuestions[randomNumGenerator()],
+          content: nextPatternQuestions[randomNumGenerator(10)],
         ));
       });
     });
@@ -179,7 +174,7 @@ class _AdvancedChatState extends State<AdvancedChat> {
                         //Function
                         nextQuestion() {
                           String question =
-                              nextPatternQuestions[randomNumGenerator()];
+                              nextPatternQuestions[randomNumGenerator(10)];
                           String opt1 = graphData[questionIndex]['option1'];
                           String opt2 = graphData[questionIndex]['option2'];
                           String opt3 = graphData[questionIndex]['option3'];
@@ -221,9 +216,10 @@ class _AdvancedChatState extends State<AdvancedChat> {
                           debugPrint('opt:$questionIndex $answer $option');
                           debugPrint('selected: $selected');
 
-                          int tempNum = randomNumGenerator();
+                          int tempNum = randomNumGenerator(10);
                           Future.delayed(const Duration(seconds: 1), () {
                             if (selected == option) {
+                              currentScore++;
                               data.add(
                                 Message(
                                   sender: 'model',
@@ -231,6 +227,7 @@ class _AdvancedChatState extends State<AdvancedChat> {
                                 ),
                               );
                             } else {
+                              currentScore--;
                               data.add(
                                 Message(
                                   sender: 'model',
@@ -239,16 +236,35 @@ class _AdvancedChatState extends State<AdvancedChat> {
                               );
                             }
                             setState(() {});
-                          }).then(
-                            (value) =>
-                                Future.delayed(const Duration(seconds: 1), () {
-                              setState(() {
-                                nextQuestion();
+                          }).then((value) {
+                            if (questionIndex == graphData.length - 1) {
+                              Future.delayed(const Duration(seconds: 1), () {
+                                Navigator.pushAndRemoveUntil(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => HomePage()),
+                                    (route) => false);
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => ResultPage(
+                                      score: currentScore,
+                                      total: graphData.length,
+                                      basic: false,
+                                    ),
+                                  ),
+                                );
                               });
-                            }).then(
-                              (value) => scrollToBottom(),
-                            ),
-                          );
+                            } else {
+                              Future.delayed(const Duration(seconds: 1), () {
+                                setState(() {
+                                  nextQuestion();
+                                });
+                              }).then(
+                                (value) => scrollToBottom(),
+                              );
+                            }
+                          });
                           scrollToBottom();
                         }
 

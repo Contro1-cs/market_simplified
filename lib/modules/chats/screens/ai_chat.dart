@@ -1,21 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:hushh_proto/main.dart';
 import 'package:hushh_proto/modules/chats/models/message_model.dart';
 import 'package:hushh_proto/widgets/colors.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:hushh_proto/widgets/snackbars.dart';
 
-bool lightMode = false;
-
-class Referance extends StatefulWidget {
-  const Referance({super.key});
+class AiChatBot extends StatefulWidget {
+  const AiChatBot({super.key});
 
   @override
-  State<Referance> createState() => _ReferanceState();
+  State<AiChatBot> createState() => _AiChatBotState();
 }
 
-class _ReferanceState extends State<Referance> {
+class _AiChatBotState extends State<AiChatBot> {
   //Controllers
   TextEditingController chatController = TextEditingController();
   ScrollController chatScrollController = ScrollController();
@@ -24,11 +23,10 @@ class _ReferanceState extends State<Referance> {
   bool loading = true;
   bool fetchingContent = true;
   String stats = '';
-
-  //github
-  List repoContent = [];
-  Map<String, int> languageStats = {};
-  Map<String, int> languagePercentStats = {};
+  int basicTests = 0;
+  int advTests = 0;
+  double basicScore = 0.0;
+  double advScore = 0.0;
 
   //Chat
   List<Message> chatList = [];
@@ -41,17 +39,62 @@ class _ReferanceState extends State<Referance> {
         "parts": [
           {
             "text":
-                "Hey Gemini, I want to make some advancements in my career and I need your help to get me there. I need answers that are on point and dont give too long answers, short and medium size answers are appreciated."
+                "Imagine your are a stock market wizard. You have 30 years of experience in trading and you also have a masteres degree in it. You are the smartest trader in the world"
           }
         ]
       },
       {
         "role": "model",
         "parts": [
+          {"text": "Okay. I am a stock market wizard."}
+        ]
+      },
+      {
+        "role": "user",
+        "parts": [
           {
             "text":
-                "Sure, I will answer your questions in short and consize way."
+                "Now imagine I am your student and you are getting old. Hence, you decide to transfer all your knowledge to me so that I can carry the legacy."
           }
+        ]
+      },
+      {
+        "role": "model",
+        "parts": [
+          {"text": "Sure, I will answer all of your questions"}
+        ]
+      },
+      {
+        "role": "user",
+        "parts": [
+          {
+            "text":
+                "Now in the past ${basicTests.toStringAsFixed(2)} basic tests I scored ${basicScore.toStringAsFixed(2)}%. The basic tests includes basic level theoritical knowledge and bookish concepts. I also scored $advScore% in advance tests which includes pattern recognition, support and resistance identificaiton and more complex stuff."
+          }
+        ]
+      },
+      {
+        "role": "model",
+        "parts": [
+          {"text": "I have noted down your test scores"}
+        ]
+      },
+      {
+        "role": "user",
+        "parts": [
+          {"text": "Now analyze my scores and answer my questions."}
+        ]
+      },
+      {
+        "role": "model",
+        "parts": [
+          {"text": "I have analyzed your profile. How can I help you today?"}
+        ]
+      },
+      {
+        "role": "user",
+        "parts": [
+          {"text": prompt}
         ]
       },
     ];
@@ -141,8 +184,31 @@ class _ReferanceState extends State<Referance> {
     );
   }
 
+  //Functions
+  void fetchScores() async {
+    var data = await supabase
+        .from('users')
+        .select()
+        .eq('user_id', supabase.auth.currentUser!.id)
+        .single();
+    basicScore = data['basic_score'];
+    basicTests = data['basic_tests'];
+    advScore = data['adv_score'];
+    advTests = data['adv_tests'];
+    debugPrint('$basicScore $basicTests $advScore $advTests');
+    setState(() {
+      fetchingContent = false;
+      loading = false;
+    });
+  }
+
   @override
   void initState() {
+    fetchScores();
+    chatList.add(Message(
+        sender: 'model',
+        content:
+            'I have analyzed your profile and ready to answer your question. How can I help you?'));
     super.initState();
   }
 
@@ -161,81 +227,17 @@ class _ReferanceState extends State<Referance> {
     }
 
     return Scaffold(
-      backgroundColor: lightMode ? Pallet.white : Pallet.black30,
+      backgroundColor: Pallet.black15,
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        backgroundColor: lightMode ? Pallet.white : Pallet.black30,
+        backgroundColor: Pallet.black15,
         title: Text(
-          'ai chat',
+          'AI Chat',
           style: TextStyle(
-            color: lightMode ? Pallet.black30 : Pallet.white,
+            color: Pallet.white,
           ),
         ),
-        actions: <Widget>[
-          PopupMenuButton(
-            icon: Icon(
-              Icons.more_vert,
-              color: lightMode ? Pallet.black30 : Pallet.white,
-            ), // Three dots icon
-            itemBuilder: (BuildContext context) => [
-              PopupMenuItem(
-                child: Row(
-                  children: [
-                    // SvgPicture.asset(
-                    //   'assets/github.svg',
-                    //   height: 20,
-                    // ),
-                    SizedBox(width: 5),
-                    Text('Change Github Info'),
-                  ],
-                ),
-                onTap: () {},
-              ),
-              PopupMenuItem(
-                child: const Row(
-                  children: [
-                    Icon(
-                      Icons.refresh,
-                      color: Pallet.red,
-                      size: 20,
-                    ),
-                    SizedBox(width: 5),
-                    Text(
-                      'Reset chat',
-                      style: TextStyle(color: Pallet.red),
-                    ),
-                  ],
-                ),
-                onTap: () {
-                  setState(() {
-                    chatList.clear();
-                  });
-                },
-              ),
-              PopupMenuItem(
-                child: Row(
-                  children: [
-                    Icon(
-                      lightMode ? Icons.dark_mode : Icons.light_mode,
-                      color: Pallet.black30,
-                      size: 20,
-                    ),
-                    const SizedBox(width: 5),
-                    Text(
-                      lightMode ? 'Dark Mode' : 'Light Mode',
-                      style: const TextStyle(color: Pallet.black30),
-                    ),
-                  ],
-                ),
-                onTap: () {
-                  setState(() {
-                    lightMode = !lightMode;
-                  });
-                },
-              ),
-            ],
-          ),
-        ],
+        centerTitle: true,
       ),
       body: fetchingContent
           ? Center(
@@ -270,9 +272,7 @@ class _ReferanceState extends State<Referance> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              lightMode
-                                  ? SvgPicture.asset("assets/logo_dark.svg")
-                                  : SvgPicture.asset("assets/logo_light.svg"),
+                              SvgPicture.asset("assets/logo_light.svg"),
                               const SizedBox(height: 20),
                               Text(
                                 'Personalized Growth\nCoach',
@@ -318,18 +318,14 @@ class _ReferanceState extends State<Referance> {
                                     ),
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(20),
-                                      color: lightMode
-                                          ? Pallet.blue
-                                          : Pallet.white,
+                                      color: Pallet.white,
                                     ),
                                     child: Text(
                                       message,
                                       softWrap: true,
                                       // maxLines: null,
                                       style: TextStyle(
-                                        color: lightMode
-                                            ? Pallet.white
-                                            : Pallet.black30,
+                                        color: Pallet.black30,
                                         fontSize: 16,
                                       ),
                                     ),
@@ -352,17 +348,14 @@ class _ReferanceState extends State<Referance> {
                           padding: const EdgeInsets.symmetric(
                               horizontal: 16, vertical: 8),
                           decoration: BoxDecoration(
-                            color: lightMode
-                                ? Pallet.black30.withOpacity(0.2)
-                                : Pallet.white.withOpacity(0.2),
+                            color: Pallet.white.withOpacity(0.2),
                             borderRadius: BorderRadius.circular(30),
                           ),
                           child: TextField(
                             controller: chatController,
-                            cursorColor:
-                                lightMode ? Pallet.black30 : Pallet.white,
+                            cursorColor: Pallet.white,
                             style: TextStyle(
-                              color: lightMode ? Pallet.black30 : Pallet.white,
+                              color: Pallet.white,
                             ),
                             maxLines: null,
                             cursorRadius: const Radius.circular(100),
@@ -371,9 +364,7 @@ class _ReferanceState extends State<Referance> {
                               border: InputBorder.none,
                               hintText: 'Message',
                               hintStyle: TextStyle(
-                                color: lightMode
-                                    ? Pallet.black30.withOpacity(0.5)
-                                    : Pallet.white.withOpacity(0.5),
+                                color: Pallet.white.withOpacity(0.5),
                               ),
                             ),
                           ),
@@ -386,8 +377,7 @@ class _ReferanceState extends State<Referance> {
                         child: IconButton.filledTonal(
                           color: Colors.white,
                           style: IconButton.styleFrom(
-                              backgroundColor:
-                                  lightMode ? Pallet.black30 : Pallet.white),
+                              backgroundColor: Pallet.white),
                           onPressed: () {
                             if (chatController.text.trim().isNotEmpty &&
                                 !loading) {
@@ -411,8 +401,7 @@ class _ReferanceState extends State<Referance> {
                                 )
                               : Icon(
                                   Icons.arrow_upward_rounded,
-                                  color:
-                                      lightMode ? Pallet.white : Pallet.black30,
+                                  color: Pallet.black30,
                                 ),
                         ),
                       ),

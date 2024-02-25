@@ -23,6 +23,7 @@ List<String> wrongResponses = [
   "Close, but not quite! Keep pushing!"
 ];
 
+//Pattern identification greetings
 List<String> nextPatternQuestions = [
   "What pattern do you anticipate in the next graph?",
   "Can you guess the pattern in the upcoming graph?",
@@ -36,84 +37,44 @@ List<String> nextPatternQuestions = [
   "Can you anticipate the pattern in the upcoming graph?",
 ];
 
-// Map<String, List<Map<String, double>>> patterns = {
-//   'HeadShoulders': [
-//     {"x": 1, "y": 0},
-//     {"x": 2, "y": 2},
-//     {"x": 3, "y": 3},
-//     {"x": 4, "y": 1},
-//     {"x": 5, "y": 5},
-//     {"x": 6, "y": 1.5},
-//     {"x": 7, "y": 2},
-//     {"x": 8, "y": 3},
-//     {"x": 9, "y": 2},
-//     {"x": 10, "y": 0},
-//   ],
-//   'DoubleTop': [
-//     {"x": 1, "y": 1},
-//     {"x": 2, "y": 2},
-//     {"x": 3, "y": 3},
-//     {"x": 4, "y": 4},
-//     {"x": 5, "y": 5},
-//     {"x": 6, "y": 3},
-//     {"x": 7, "y": 5},
-//     {"x": 8, "y": 4},
-//     {"x": 9, "y": 3},
-//     {"x": 10, "y": 1},
-//   ],
-//   'DoubleBottom': [
-//     {"x": 1, "y": -1},
-//     {"x": 2, "y": -2},
-//     {"x": 3, "y": -3},
-//     {"x": 4, "y": -4},
-//     {"x": 5, "y": -5},
-//     {"x": 6, "y": -3},
-//     {"x": 7, "y": -5},
-//     {"x": 8, "y": -4},
-//     {"x": 9, "y": -3},
-//     {"x": 10, "y": -1},
-//   ],
-//   'CupHandle': [
-//     {"x": 1, "y": 0},
-//     {"x": 2, "y": 4},
-//     {"x": 3, "y": 2.2},
-//     {"x": 4, "y": 2},
-//     {"x": 5, "y": 0.8},
-//     {"x": 6, "y": 1},
-//     {"x": 7, "y": 0.8},
-//     {"x": 8, "y": 2},
-//     {"x": 9, "y": 2.2},
-//     {"x": 10, "y": 4},
-//     {"x": 11, "y": 3},
-//     {"x": 12, "y": 4},
-//     {"x": 13, "y": 6},
-//   ],
-//   'AscendingTriangle': [
-//     {"x": 1, "y": 0},
-//     {"x": 2, "y": 8},
-//     {"x": 3, "y": 1.5},
-//     {"x": 4, "y": 8},
-//     {"x": 5, "y": 3.5},
-//     {"x": 6, "y": 8},
-//     {"x": 7, "y": 5},
-//     {"x": 8, "y": 8},
-//     {"x": 9, "y": 6},
-//     {"x": 10, "y": 12},
-//     {"x": 11, "y": 10},
-//     {"x": 12, "y": 15},
-//   ],
-//   'DescendingTriangle': [
-//     {"x": 1, "y": 10},
-//     {"x": 2, "y": 3},
-//     {"x": 3, "y": 9},
-//     {"x": 4, "y": 3},
-//     {"x": 5, "y": 7},
-//     {"x": 6, "y": 3},
-//     {"x": 7, "y": 5},
-//     {"x": 8, "y": 3},
-//     {"x": 9, "y": 3},
-//     {"x": 10, "y": 0},
-//     {"x": 11, "y": 2},
-//     {"x": 12, "y": -1},
-//   ],
-// };
+// Below Average greetings
+List<String> belowAverageGreetings = [
+  "Don't worry, there's room for improvement. Keep practicing!",
+  "You're getting there! Focus on areas where you need more practice.",
+  "You're making progress! Keep working hard and you'll improve."
+];
+
+// Average greetings
+List<String> averageGreetings = [
+  "You're doing fine! Consistency is key, keep it up!",
+  "Steady progress! Keep practicing to maintain your level.",
+  "You're on track! Keep up the good work and stay focused."
+];
+
+// Above Average greetings
+List<String> aboveAverageGreetings = [
+  "Great job! Your hard work is paying off, keep pushing!",
+  "Excellent work! Keep challenging yourself to maintain this level.",
+  "Impressive performance! Keep striving for excellence, you're doing fantastic!"
+];
+
+// Below Average improvement suggestions
+List<String> belowAverageImprovement = [
+  "Focus on practicing the concepts you find challenging.",
+  "Try breaking down complex problems into smaller, manageable steps.",
+  "Consider seeking additional resources or guidance to strengthen your understanding."
+];
+
+// Average improvement suggestions
+List<String> averageImprovement = [
+  "Review your performance and identify areas where you can refine your skills.",
+  "Experiment with different study techniques to find what works best for you.",
+  "Challenge yourself with more difficult problems to expand your knowledge and skills."
+];
+
+// Above Average improvement suggestions
+List<String> aboveAverageImprovement = [
+  "Continue challenging yourself with advanced topics to further enhance your expertise.",
+  "Explore real-world applications of the concepts you've mastered to deepen your understanding.",
+  "Consider mentoring others or participating in collaborative projects to broaden your perspective."
+];
